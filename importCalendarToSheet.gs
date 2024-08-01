@@ -69,18 +69,18 @@ function getWorkType(event) {
   }
 
   switch (colorNum) {
-    case "1":
+    case "1": //ラベンダー
       return "開発";
-    case "3":
-      return "共通";
-    case "4":
-      return "個人";
-    case "5":
+    case "3": //ブドウ
+      return "private";
+    case "4": //フラミンゴ
+      return "その他業務";
+    case "5": //バナナ
       return "休み";
-    case "6":
-      return "その他";
-    case "7":
-      return "保守";
+    case "6": //
+      return "未設定";
+    case "7": //
+      return "未設定";
     default:
       return colorNum;
   }
@@ -94,7 +94,7 @@ function exportCalendarSchedule() {
   const sheet = getSheet(now);
 
   const result = [
-    ["年月", "日付", "分類", "予定のタイトル", "開始", "終了"], // 項目名を配列の先頭に追加する
+    ["年月", "日付", "分類", "予定のタイトル", "開始", "終了", "作業時間"], // 項目名を配列の先頭に追加する
   ];
 
   const date_start = new Date(now.getFullYear(), 0, 1); //年始
@@ -106,6 +106,7 @@ function exportCalendarSchedule() {
     }
 
     let begin = event.getStartTime();
+    let end = event.getEndTime();
     result.push(
       // 結果用の配列にまとめて追加する
       [
@@ -114,7 +115,8 @@ function exportCalendarSchedule() {
         getWorkType(event), //分類
         event.getTitle(), //予定のタイトル
         begin, //予定の開始日時
-        event.getEndTime(), //予定の終了日時
+        end, //予定の終了日時
+        (end - begin) / (1000 * 60 * 60), //作業時間
       ]
     );
   });
